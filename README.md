@@ -156,11 +156,25 @@ promptcoach/
 
 ## 🛣️ Roadmap
 
+### ✅ Phase 1 — Browser Extension (current)
+- [x] Real-time prompt analysis with coloured underlines
+- [x] Hover tooltips + click-to-fix suggestions
+- [x] Conversation context scanning (Claude, ChatGPT, Gemini)
+- [x] In-page scan button inside the chatbar
+- [x] User accounts + cloud memory (Supabase)
+- [x] Submit hook for auto-tracking prompts
+
+### 🔜 Phase 2 — Polish & Expand
 - [ ] Undo/redo for applied suggestions (Ctrl+Z)
 - [ ] Perplexity adapter
 - [ ] Team/shared memory
-- [ ] Extension store release (Chrome Web Store)
+- [ ] Chrome Web Store release
 - [ ] Firefox support
+
+### 🖥️ Phase 3 — Desktop App
+**The browser extension is just the beginning.** Once the core is proven, PromptCoach will ship as a **standalone desktop application** for Windows and macOS — sitting system-wide and overlaying prompt assistance on top of any app that communicates with an AI (not just browsers). Think: native AI copilot for your entire desktop, not just the browser tab.
+
+> Built on the same backend, same memory system, same adapters — just a native shell around them.
 
 ---
 
