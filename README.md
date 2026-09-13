@@ -50,21 +50,76 @@ backend/            Node.js / Express API (TypeScript)
 
 ---
 
-## 🚀 Quick Install (No Sign-In, No Setup!)
+## 🚀 Installation (For Users)
 
-You can start using PromptCoach immediately **without signing in and without paying for any app store**.
+**PromptCoach requires ZERO setup or sign-in to start working immediately.** 
 
-1. **[Download the extension (.zip) here](https://github.com/Gauravguddeti/inpromptu/raw/main/releases/promptcoach.zip)**
-2. Extract the downloaded `.zip` file into a folder.
-3. Open Google Chrome and type `chrome://extensions` in the URL bar.
-4. Turn on **Developer mode** (toggle in the top right corner).
-5. Click **Load unpacked** (top left) and select the extracted folder.
+Currently, PromptCoach is available to install manually. We are also pending review on the **Microsoft Edge Add-ons Store** (which will allow 1-click installs on both Edge and Chrome).
 
-**That's it! Open ChatGPT, Claude, or Gemini and you will see the PromptCoach button in your chatbox.** 
+### Install via ZIP (Takes 10 seconds):
+1. Go to the [Releases page](../../releases) (or download `promptcoach-v1.0.0.zip` directly from this repo).
+2. Extract the `.zip` file on your computer.
+3. Open Chrome or Edge and go to `chrome://extensions` (or `edge://extensions`).
+4. Turn on **Developer mode** in the top right.
+5. Click **Load unpacked** and select the extracted folder.
+
+🎉 **That's it!** Go to ChatGPT, Claude, or Gemini and start typing a prompt. The extension works entirely in the background.
 
 ---
 
-## 🛠️ Developer Setup
+## 🏗️ Getting Started (For Developers)
+
+### Prerequisites
+- Node.js 18+
+- Chrome (or any Chromium browser)
+- A [Google Gemini API key](https://aistudio.google.com/)
+- A [Supabase](https://supabase.com/) project (free tier works)
+
+### 1. Clone
+```bash
+git clone https://github.com/YOUR_USERNAME/promptcoach.git
+cd promptcoach
+```
+
+### 2. Backend
+```bash
+cd backend
+cp .env.example .env   # fill in your keys
+npm install
+npm run dev            # starts on http://localhost:3001
+```
+
+**Required `.env` variables:**
+```
+GEMINI_API_KEY=your_gemini_key
+SUPABASE_URL=https://xxx.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_key
+JWT_SECRET=any_random_string
+PORT=3001
+```
+
+### 3. Extension
+```bash
+cd extension
+npm install
+npm run build          # outputs to extension/dist/
+```
+
+### 4. Load in Chrome
+1. Go to `chrome://extensions`
+2. Enable **Developer mode** (top-right toggle)
+3. Click **Load unpacked**
+4. Select the `extension/dist/` folder
+
+### 5. Use it
+1. Open ChatGPT, Claude, or Gemini
+2. Click the **PromptCoach** icon in your toolbar
+3. Hit **Scan Chat** in the Context tab to give PromptCoach awareness of your conversation
+4. Start typing a prompt — issues appear as coloured underlines
+
+---
+
+## 🧩 How It Works
 
 ### Prompt Analysis
 The content script debounces your typing (900ms idle or sentence-end punctuation), sends the text to the backend `/analyze` endpoint, and receives a list of issue spans with severity + suggestions. The overlay renderer draws coloured underlines on top of the editor using an SVG overlay synced to text positions.
