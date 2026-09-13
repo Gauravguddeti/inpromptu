@@ -54,7 +54,7 @@ backend/            Node.js / Express API (TypeScript)
 
 **Inpromptu requires ZERO setup or sign-in to start working immediately.** 
 
-Currently, Inpromptu is available to install manually. We are also pending review on the **Microsoft Edge Add-ons Store** (which will allow 1-click installs on both Edge and Chrome).
+Currently, Inpromptu is available to install manually. We have also submitted it to the **Microsoft Edge Add-ons Store** and it is currently pending review! (Once approved, we will add the direct store link here).
 
 ### Install via ZIP (Takes 10 seconds):
 1. Go to the [Releases page](../../releases) (or download `inpromptu-v1.0.0.zip` directly from this repo).
@@ -64,6 +64,14 @@ Currently, Inpromptu is available to install manually. We are also pending revie
 5. Click **Load unpacked** and select the extracted folder.
 
 🎉 **That's it!** Go to ChatGPT, Claude, or Gemini and start typing a prompt. The extension works entirely in the background.
+
+## 📸 Screenshots
+
+| Highlighting Vague Prompts | AI Suggestions & Rewrites |
+| :---: | :---: |
+| <img src="assets/screenshot_1_highlight.png" width="400"/> | <img src="assets/screenshot_2_tooltip.png" width="400"/> |
+| **Seamless UI Integration** | **Extension Settings & Memory** |
+| <img src="assets/screenshot_5_scan.png" width="400"/> | <img src="assets/screenshot_3_popup.png" width="400"/> |
 
 ---
 
