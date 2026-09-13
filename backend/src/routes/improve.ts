@@ -4,9 +4,9 @@
  * Full prompt rewrite endpoint per §9.
  */
 
-import { Router, Response } from 'express';
+import { Router, Response, Request } from 'express';
 import { z } from 'zod';
-import { AuthenticatedRequest, requireAuth, checkRateLimit } from '../lib/auth';
+import { checkRateLimit } from '../lib/auth';
 import { runImprovePass } from '../lib/llm-router';
 import { IMPROVE_SYSTEM_PROMPT } from '../lib/prompts';
 
@@ -36,8 +36,25 @@ function computeDiff(original: string, rewritten: string) {
   return diff;
 }
 
-router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const rl = checkRateLimit(req.userId!, 'improve');
+import jwt from 'jsonwebtoken';
+
+function extractUserId(req: Request): string | null {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) return null;
+  try {
+    const token = authHeader.slice(7);
+    const payload = jwt.decode(token) as jwt.JwtPayload | null;
+    return payload?.sub ?? null;
+  } catch {
+    return null;
+  }
+}
+
+router.post('/', async (req: Request, res: Response) => {
+  const userId = extractUserId(req);
+  const rateLimitKey = userId ?? (req.ip ?? 'anon');
+  
+  const rl = checkRateLimit(rateLimitKey, 'improve');
   if (!rl.allowed) {
     res.status(429).json({ error: 'Rate limit exceeded', retryAfter: rl.retryAfter });
     return;
