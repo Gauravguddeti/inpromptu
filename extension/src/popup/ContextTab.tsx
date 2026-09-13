@@ -263,7 +263,7 @@ export function ContextTab({ isOnSupportedSite: _ }: Props) {
             (swResp) => {
               if (chrome.runtime.lastError || !swResp?.payload?.summary) {
                 setScanState('error');
-                setErrorMsg('Summarization failed. Check if the backend is running (localhost:3001).');
+                setErrorMsg('Summarization failed. Check if the backend is running (inpromptu-backend.onrender.com).');
                 return;
               }
 

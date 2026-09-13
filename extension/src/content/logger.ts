@@ -5,7 +5,7 @@
  * Also patches window.onerror and unhandledrejection globally.
  */
 
-const BACKEND_LOG_URL = 'http://localhost:3001/log';
+const BACKEND_LOG_URL = 'https://inpromptu-backend.onrender.com/log';
 
 export type LogLevel = 'error' | 'warn' | 'info' | 'debug';
 

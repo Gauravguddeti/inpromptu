@@ -19,7 +19,7 @@ export default defineManifest({
     'https://claude.ai/*',
     'https://gemini.google.com/*',
     'https://www.perplexity.ai/*',
-    'http://localhost:3001/*',
+    'https://inpromptu-backend.onrender.com/*',
   ],
 
   background: {
@@ -35,7 +35,7 @@ export default defineManifest({
         'https://claude.ai/*',
         'https://gemini.google.com/*',
         'https://www.perplexity.ai/*',
-        'http://localhost:3001/*',
+        'https://inpromptu-backend.onrender.com/*',
       ],
       js: ['src/content/index.ts'],
       run_at: 'document_idle',

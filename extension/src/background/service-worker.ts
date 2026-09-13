@@ -29,7 +29,7 @@ import {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const BACKEND_URL = 'http://localhost:3001'; // updated after deployment
+const BACKEND_URL = 'https://inpromptu-backend.onrender.com';
 
 // ─── In-memory cache (analysis results) ──────────────────────────────────────
 
