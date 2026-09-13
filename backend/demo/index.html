@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PromptCoach Demo — AI Prompt Testing Ground</title>
+  <meta name="description" content="Test the PromptCoach Chrome extension on this demo AI chat interface. See underlines, tooltips, and suggestions in action." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d12;
+      --surface: #16161e;
+      --surface2: #1e1e2a;
+      --surface3: #252535;
+      --border: rgba(255,255,255,0.07);
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --accent-glow: rgba(99,102,241,0.25);
+      --text: #e8eaf0;
+      --text2: #8892a4;
+      --text3: #4a5568;
+      --red: #ef4444;
+      --orange: #f97316;
+      --blue: #3b82f6;
+      --green: #10b981;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Top Nav ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,13,18,0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-pill {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .logo-name {
+      font-size: 17px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #e8eaf0, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+
+    .nav-link {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--text2);
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .nav-link:hover { color: var(--text); background: var(--surface2); border-color: var(--border); }
+    .nav-link.active { color: var(--accent); background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 57px);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      background: var(--surface);
+    }
+
+    .sidebar-section {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 10px;
+    }
+
+    .example-prompt {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 12px;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    .example-prompt:hover {
+      border-color: rgba(99,102,241,0.4);
+      color: var(--text);
+      background: var(--surface3);
+    }
+
+    .example-prompt .tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .tag-bad { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .tag-med { background: rgba(249,115,22,0.15); color: #f97316; }
+    .tag-good { background: rgba(16,185,129,0.15); color: #10b981; }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 6px;
+    }
+
+    .legend-line {
+      width: 24px;
+      height: 3px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ── Main Chat Area ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 18px 28px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .chat-subtitle { font-size: 13px; color: var(--text2); }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+    .message {
+      display: flex;
+      gap: 12px;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .message.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .msg-avatar.ai { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+    .msg-avatar.user-av { background: var(--surface3); border: 1px solid var(--border); }
+
+    .msg-bubble {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .message.ai .msg-bubble {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px 12px 12px 12px;
+    }
+
+    .message.user .msg-bubble {
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 12px 4px 12px 12px;
+    }
+
+    /* ── Input Area ── */
+    .input-area {
+      padding: 16px 28px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .input-wrapper {
+      position: relative;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: border-color 0.2s;
+      overflow: hidden;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: rgba(99,102,241,0.5);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+
+    #prompt-input {
+      width: 100%;
+      min-height: 80px;
+      max-height: 200px;
+      padding: 16px 16px 48px;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      resize: none;
+      overflow-y: auto;
+    }
+
+    #prompt-input::placeholder { color: var(--text3); }
+    #prompt-input::-webkit-scrollbar { width: 4px; }
+    #prompt-input::-webkit-scrollbar-thumb { background: var(--surface3); }
+
+    .input-toolbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+    }
+
+    .toolbar-left { display: flex; align-items: center; gap: 6px; }
+
+    .char-count {
+      font-size: 11px;
+      color: var(--text3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .analysis-status {
+      font-size: 11px;
+      color: var(--text3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .analysis-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: none;
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    .analysis-dot.active { display: block; }
+
+    .send-btn {
+      padding: 7px 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    .send-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); }
+    .send-btn:active { transform: translateY(0); }
+
+    /* ── Right Panel — Log Monitor ── */
+    .log-panel {
+      width: 340px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+
+    .log-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .log-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .log-live-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(16,185,129,0.15);
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .log-clear-btn {
+      font-size: 11px;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: transparent;
+      color: var(--text3);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .log-clear-btn:hover { color: var(--text2); background: var(--surface2); }
+
+    .log-filters {
+      display: flex;
+      gap: 4px;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .log-filter {
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text3);
+      font-family: inherit;
+      transition: all 0.1s;
+    }
+
+    .log-filter.active { border-color: var(--accent); color: var(--accent); background: rgba(99,102,241,0.08); }
+    .log-filter.error-f.active { border-color: var(--red); color: var(--red); background: rgba(239,68,68,0.08); }
+    .log-filter.warn-f.active { border-color: var(--orange); color: var(--orange); background: rgba(249,115,22,0.08); }
+
+    .log-entries {
+      flex: 1;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .log-entries::-webkit-scrollbar { width: 3px; }
+    .log-entries::-webkit-scrollbar-thumb { background: var(--surface3); }
+
+    .log-entry {
+      padding: 6px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      animation: slideUp 0.15s ease-out;
+    }
+
+    .log-entry:hover { background: var(--surface2); }
+
+    .log-time { color: var(--text3); white-space: nowrap; flex-shrink: 0; }
+
+    .log-level {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      letter-spacing: 0.05em;
+    }
+
+    .level-error { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .level-warn { background: rgba(249,115,22,0.15); color: #f97316; }
+    .level-info { background: rgba(99,102,241,0.15); color: #818cf8; }
+    .level-debug { background: rgba(100,116,139,0.15); color: #64748b; }
+
+    .log-msg {
+      color: var(--text2);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .log-source-badge {
+      font-size: 9px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text3);
+      flex-shrink: 0;
+    }
+
+    .log-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      color: var(--text3);
+      font-size: 12px;
+      padding: 40px;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .log-stats {
+      padding: 8px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .log-stat { display: flex; gap: 4px; align-items: center; }
+    .log-stat-val { font-weight: 700; }
+    .stat-err { color: var(--red); }
+    .stat-warn { color: var(--orange); }
+
+    /* ── Issue Counter Badge ── */
+    .issue-counter {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      background: rgba(22,22,30,0.95);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 8px 16px;
+      font-size: 12px;
+      z-index: 9999;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .issue-counter.visible { opacity: 1; }
+
+    .issue-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    .badge-red { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .badge-orange { background: rgba(249,115,22,0.15); color: #f97316; }
+    .badge-blue { background: rgba(59,130,246,0.15); color: #3b82f6; }
+
+    /* ── Animations ── */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Typing indicator ── */
+    .typing { display: flex; gap: 4px; align-items: center; padding: 8px 0; }
+    .typing-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--text3);
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingBounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* ── Extension hint banner ── */
+    .ext-hint {
+      margin: 0 28px 16px;
+      padding: 10px 16px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ext-hint-icon { font-size: 18px; flex-shrink: 0; }
+
+    @media (max-width: 1100px) {
+      .log-panel { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <span class="logo-pill">✨</span>
+    <span class="logo-name">PromptCoach</span>
+  </a>
+  <div class="nav-badge">
+    <span class="status-dot"></span>
+    Extension demo
+  </div>
+  <div class="nav-links">
+    <a href="#" class="nav-link active" id="nav-demo">Demo Chat</a>
+    <a href="#logs" class="nav-link" id="nav-logs" onclick="scrollToLogs()">Error Logs</a>
+  </div>
+</nav>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Try These Prompts</div>
+      <div class="example-prompt" onclick="loadPrompt(this.dataset.p)" data-p="Write a good summary of this article">
+        <span class="tag tag-bad">🔴 Critical</span><br>Write a good summary of this article
+      </div>
+      <div class="example-prompt" onclick="loadPrompt(this.dataset.p)" data-p="Make a nice blog post about our product that will go viral and include some technical details for our customers">
+        <span class="tag tag-bad">🔴 Critical</span><br>Make a nice blog post about our product that will go viral
+      </div>
+      <div class="example-prompt" onclick="loadPrompt(this.dataset.p)" data-p="Explain machine learning to me in a way that's interesting">
+        <span class="tag tag-med">🟠 Fixable</span><br>Explain machine learning in an interesting way
+      </div>
+      <div class="example-prompt" onclick="loadPrompt(this.dataset.p)" data-p="Write a persuasive 500-word email to enterprise CTOs explaining why they should adopt our API-first authentication platform, focusing on security compliance and time-to-market advantages">
+        <span class="tag tag-good">✅ Good</span><br>Write a persuasive email to enterprise CTOs about our auth platform
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Underline Legend</div>
+      <div class="legend-item">
+        <div class="legend-line" style="background: #ef4444;"></div>
+        <span>Critical issue — will cause failure</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background: #f97316;"></div>
+        <span>Fixable — optional improvement</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background: #3b82f6;"></div>
+        <span>Style / structure suggestion</span>
+      </div>
+
+      <div style="margin-top: 14px; font-size: 11px; color: var(--text3); line-height: 1.6;">
+        Hover over any underlined text to see suggestions, just like Grammarly.
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Extension Status</div>
+      <div id="ext-status" style="font-size: 12px; color: var(--text3); line-height: 1.6;">
+        Checking extension...
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Chat -->
+  <main class="main">
+    <div class="chat-header">
+      <div class="chat-title">AI Prompt Testing Ground</div>
+      <div class="chat-subtitle">Type a prompt below — PromptCoach will underline issues and suggest fixes in real-time</div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <div class="message ai">
+        <div class="msg-avatar ai">✨</div>
+        <div class="msg-bubble">
+          Hello! I'm the PromptCoach demo. Type your AI prompt in the box below and the extension will analyze it in real-time — underlining issues and showing suggestions on hover, just like Grammarly.<br><br>
+          Try one of the example prompts on the left to see it in action! 👈
+        </div>
+      </div>
+    </div>
+
+    <div class="ext-hint">
+      <span class="ext-hint-icon">🧩</span>
+      <span>The PromptCoach extension is watching this input. After you stop typing, it will underline issues — <strong>hover over underlined text</strong> to see suggestions.</span>
+    </div>
+
+    <div class="input-area">
+      <div class="input-wrapper">
+        <textarea
+          id="prompt-input"
+          placeholder="Type your AI prompt here... (e.g. 'Write a good summary of this article')"
+          rows="3"
+        ></textarea>
+        <div class="input-toolbar">
+          <div class="toolbar-left">
+            <span class="char-count" id="char-count">0 chars</span>
+            <div class="analysis-status">
+              <div class="analysis-dot" id="analysis-dot"></div>
+              <span id="analysis-text"></span>
+            </div>
+          </div>
+          <button class="send-btn" onclick="sendMessage()">Send ↵</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right Log Panel -->
+  <aside class="log-panel" id="log-panel">
+    <div class="log-header">
+      <div class="log-title">
+        📋 Error Monitor
+        <span class="log-live-badge" id="live-badge">LIVE</span>
+      </div>
+      <button class="log-clear-btn" onclick="clearLogs()">Clear</button>
+    </div>
+
+    <div class="log-filters">
+      <button class="log-filter active" data-filter="all" onclick="setFilter('all', this)">All</button>
+      <button class="log-filter error-f" data-filter="error" onclick="setFilter('error', this)">Error</button>
+      <button class="log-filter warn-f" data-filter="warn" onclick="setFilter('warn', this)">Warn</button>
+      <button class="log-filter" data-filter="info" onclick="setFilter('info', this)">Info</button>
+    </div>
+
+    <div class="log-entries" id="log-entries">
+      <div class="log-empty" id="log-empty">
+        <div style="font-size: 24px;">📭</div>
+        <div>Waiting for logs...</div>
+        <div style="color: var(--text3); font-size: 10px; margin-top: 4px;">Connected to SSE stream</div>
+      </div>
+    </div>
+
+    <div class="log-stats">
+      <div class="log-stat"><span class="log-stat-val stat-err" id="stat-errors">0</span> errors</div>
+      <div class="log-stat"><span class="log-stat-val stat-warn" id="stat-warns">0</span> warns</div>
+      <div class="log-stat"><span class="log-stat-val" id="stat-total">0</span> total</div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- Issue counter overlay (shows when extension finds issues) -->
+<div class="issue-counter" id="issue-counter">
+  <div class="issue-badge badge-red" id="counter-red" style="display:none">
+    <span>●</span> <span id="count-red">0</span> critical
+  </div>
+  <div class="issue-badge badge-orange" id="counter-orange" style="display:none">
+    <span>●</span> <span id="count-orange">0</span> fixable
+  </div>
+  <div class="issue-badge badge-blue" id="counter-blue" style="display:none">
+    <span>●</span> <span id="count-blue">0</span> style
+  </div>
+  <span style="color: var(--text3); font-size: 11px; margin-left: 4px;">issues detected</span>
+</div>
+
+<script>
+  // ── Log stream via SSE ────────────────────────────────────────────────────
+  const LOG_URL = 'http://localhost:3001/log/stream';
+  let currentFilter = 'all';
+  let allLogs = [];
+  let stats = { error: 0, warn: 0, total: 0 };
+  let sseConnected = false;
+
+  function connectSSE() {
+    const es = new EventSource(LOG_URL);
+
+    es.onopen = () => {
+      sseConnected = true;
+      document.getElementById('live-badge').textContent = 'LIVE';
+      document.getElementById('live-badge').style.background = 'rgba(16,185,129,0.15)';
+      document.getElementById('live-badge').style.color = '#10b981';
+    };
+
+    es.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'connected') return;
+      addLogEntry(data);
+    };
+
+    es.onerror = () => {
+      sseConnected = false;
+      document.getElementById('live-badge').textContent = 'OFFLINE';
+      document.getElementById('live-badge').style.background = 'rgba(239,68,68,0.15)';
+      document.getElementById('live-badge').style.color = '#ef4444';
+      setTimeout(connectSSE, 3000);
+    };
+  }
+
+  function addLogEntry(entry) {
+    const now = new Date();
+    const time = now.toTimeString().slice(0, 8);
+
+    const log = { ...entry, time, id: Date.now() };
+    allLogs.unshift(log);
+    if (allLogs.length > 200) allLogs.pop();
+
+    stats.total++;
+    if (entry.level === 'error') stats.error++;
+    if (entry.level === 'warn') stats.warn++;
+
+    document.getElementById('stat-errors').textContent = stats.error;
+    document.getElementById('stat-warns').textContent = stats.warn;
+    document.getElementById('stat-total').textContent = stats.total;
+
+    if (currentFilter === 'all' || currentFilter === entry.level) {
+      renderLogEntry(log);
+    }
+  }
+
+  function renderLogEntry(log) {
+    const empty = document.getElementById('log-empty');
+    if (empty) empty.style.display = 'none';
+
+    const container = document.getElementById('log-entries');
+    const el = document.createElement('div');
+    el.className = 'log-entry';
+    el.dataset.level = log.level;
+
+    const source = log.source === 'client' ? 'EXT' : 'SRV';
+
+    el.innerHTML = `
+      <span class="log-time">${log.time}</span>
+      <span class="log-level level-${log.level}">${log.level.toUpperCase()}</span>
+      <span class="log-source-badge">${source}</span>
+      <span class="log-msg">${escapeHtml(log.message || '')}</span>
+    `;
+
+    // Insert after filters
+    const firstEntry = container.querySelector('.log-entry');
+    if (firstEntry) {
+      container.insertBefore(el, firstEntry);
+    } else {
+      container.appendChild(el);
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function clearLogs() {
+    allLogs = [];
+    stats = { error: 0, warn: 0, total: 0 };
+    document.getElementById('log-entries').innerHTML = '<div class="log-empty" id="log-empty"><div style="font-size:24px">📭</div><div>Cleared</div></div>';
+    document.getElementById('stat-errors').textContent = '0';
+    document.getElementById('stat-warns').textContent = '0';
+    document.getElementById('stat-total').textContent = '0';
+  }
+
+  function setFilter(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.log-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const container = document.getElementById('log-entries');
+    container.innerHTML = '<div class="log-empty" id="log-empty" style="display:none"></div>';
+
+    const filtered = filter === 'all' ? allLogs : allLogs.filter(l => l.level === filter);
+    if (filtered.length === 0) {
+      document.getElementById('log-empty').style.display = 'flex';
+      document.getElementById('log-empty').innerHTML = '<div>No ' + filter + ' logs</div>';
+      return;
+    }
+    filtered.forEach(renderLogEntry);
+  }
+
+  // ── Chat simulation ────────────────────────────────────────────────────────
+  const RESPONSES = {
+    default: "I received your prompt! Notice how PromptCoach has analyzed it above — hover over any underlined text to see suggestions.",
+    good: "This is a well-structured prompt! Clear, specific, with a defined audience and output format. The extension should show minimal or no issues.",
+  };
+
+  function loadPrompt(text) {
+    const input = document.getElementById('prompt-input');
+    input.value = text;
+    input.focus();
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    updateCharCount();
+  }
+
+  function updateCharCount() {
+    const val = document.getElementById('prompt-input').value;
+    document.getElementById('char-count').textContent = val.length + ' chars';
+  }
+
+  function setAnalysisState(state) {
+    const dot = document.getElementById('analysis-dot');
+    const text = document.getElementById('analysis-text');
+    if (state === 'analyzing') {
+      dot.classList.add('active');
+      text.textContent = 'Analyzing…';
+      text.style.color = '#6366f1';
+    } else if (state === 'done') {
+      dot.classList.remove('active');
+      text.textContent = 'Analysis complete';
+      text.style.color = '#10b981';
+      setTimeout(() => { text.textContent = ''; }, 3000);
+    } else {
+      dot.classList.remove('active');
+      text.textContent = '';
+    }
+  }
+
+  let debounceTimer;
+  document.getElementById('prompt-input').addEventListener('input', () => {
+    updateCharCount();
+    clearTimeout(debounceTimer);
+    setAnalysisState('analyzing');
+    debounceTimer = setTimeout(() => {
+      setAnalysisState('done');
+    }, 1500);
+  });
+
+  document.getElementById('prompt-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) sendMessage();
+  });
+
+  function sendMessage() {
+    const input = document.getElementById('prompt-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const messages = document.getElementById('chat-messages');
+
+    // User message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user';
+    userMsg.innerHTML = `
+      <div class="msg-avatar user-av">👤</div>
+      <div class="msg-bubble">${escapeHtml(text)}</div>
+    `;
+    messages.appendChild(userMsg);
+
+    // Typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'message ai';
+    typing.innerHTML = `
+      <div class="msg-avatar ai">✨</div>
+      <div class="msg-bubble">
+        <div class="typing">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    `;
+    messages.appendChild(typing);
+    messages.scrollTop = messages.scrollHeight;
+
+    input.value = '';
+    updateCharCount();
+    setAnalysisState('idle');
+
+    setTimeout(() => {
+      messages.removeChild(typing);
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'message ai';
+      aiMsg.innerHTML = `
+        <div class="msg-avatar ai">✨</div>
+        <div class="msg-bubble">${RESPONSES.default}</div>
+      `;
+      messages.appendChild(aiMsg);
+      messages.scrollTop = messages.scrollHeight;
+    }, 1200 + Math.random() * 800);
+  }
+
+  // ── Issue counter listener (posted by extension) ───────────────────────────
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === 'PROMPTCOACH_ISSUES') {
+      const { red, orange, blue } = e.data;
+      const counter = document.getElementById('issue-counter');
+
+      const showBadge = (id, countId, count) => {
+        const el = document.getElementById(id);
+        document.getElementById(countId).textContent = count;
+        el.style.display = count > 0 ? 'flex' : 'none';
+      };
+
+      showBadge('counter-red', 'count-red', red);
+      showBadge('counter-orange', 'count-orange', orange);
+      showBadge('counter-blue', 'count-blue', blue);
+      counter.classList.toggle('visible', red + orange + blue > 0);
+    }
+  });
+
+  // ── Extension status check ─────────────────────────────────────────────────
+  function checkExtension() {
+    const statusEl = document.getElementById('ext-status');
+    let attempts = 0;
+    const MAX = 10;
+
+    const interval = setInterval(() => {
+      attempts++;
+      // Check for the sentinel div injected by the extension's OverlayRenderer
+      const overlay = document.getElementById('promptcoach-overlay');
+      if (overlay) {
+        clearInterval(interval);
+        statusEl.innerHTML = `
+          <span style="color:#10b981;font-weight:600">✓ Extension active</span><br>
+          <span>Analysis is running on the prompt input below.</span>
+        `;
+      } else if (attempts >= MAX) {
+        clearInterval(interval);
+        statusEl.innerHTML = `
+          <span style="color:#f97316;font-weight:600">⚠ Extension not detected</span><br>
+          <span>Go to <code>chrome://extensions/</code>, click 🔄 refresh on PromptCoach, then reload this tab.</span>
+        `;
+      }
+    }, 500);
+  }
+
+  connectSSE();
+  checkExtension();
+</script>
+</body>
+</html>

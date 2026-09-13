@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "D:\\impromptuuu\\backend\\logs\\.3dbd4be5cbb51211b1996749ae0f984b0f21be71-audit.json",
+    "files": [
+        {
+            "date": 1788897778632,
+            "name": "D:\\impromptuuu\\backend\\logs\\app-2026-09-09.log",
+            "hash": "ff44a25f82ddf2e34f3b2657a286a3136c1f575d4f3813bcd6fd08350af06e52"
+        },
+        {
+            "date": 1789076978030,
+            "name": "D:\\impromptuuu\\backend\\logs\\app-2026-09-11.log",
+            "hash": "ed273673a44d6277831adfd803669d9574302b39d535c44e28033260736667be"
+        },
+        {
+            "date": 1789299540935,
+            "name": "D:\\impromptuuu\\backend\\logs\\app-2026-09-13.log",
+            "hash": "8eb7dc3e6a2819153220b83ec46f4a62768d8ed0b91c0797bc863986f35b8512"
+        }
+    ],
+    "hashType": "sha256"
+}

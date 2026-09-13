@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+extension/dist/
+backend/dist/
+
+# Environment secrets — NEVER commit these
+.env
+backend/.env
+extension/.env
+*.env.local
+*.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# Temp files
+*.tmp
+*.temp
