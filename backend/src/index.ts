@@ -1,5 +1,5 @@
 /**
- * PromptCoach Backend — Express Server
+ * Inpromptu Backend — Express Server
  */
 
 import 'dotenv/config';
@@ -69,7 +69,7 @@ async function start() {
     logger.info('DB migration complete');
 
     app.listen(PORT, () => {
-      logger.info(`PromptCoach backend running on http://localhost:${PORT}`);
+      logger.info(`Inpromptu backend running on http://localhost:${PORT}`);
       logger.info(`Demo site: http://localhost:${PORT}/demo`);
     });
   } catch (err) {

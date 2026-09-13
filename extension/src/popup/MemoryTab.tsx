@@ -83,7 +83,7 @@ export function MemoryTab({ authState }: Props) {
         <div className="memory-empty-icon">🧠</div>
         <div className="memory-empty-title">No memories yet</div>
         <div className="memory-empty-desc">
-          PromptCoach will learn your writing style, terminology, and project context as you use it.
+          Inpromptu will learn your writing style, terminology, and project context as you use it.
           All entries are visible and editable here.
         </div>
       </div>

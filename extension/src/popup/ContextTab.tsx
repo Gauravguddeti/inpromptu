@@ -333,7 +333,7 @@ export function ContextTab({ isOnSupportedSite: _ }: Props) {
         <div>
           <div style={styles.headerTitle}>Conversation Context</div>
           <div style={styles.headerSub}>
-            Help PromptCoach understand what you&apos;ve been discussing
+            Help Inpromptu understand what you&apos;ve been discussing
           </div>
         </div>
       </div>
@@ -363,7 +363,7 @@ export function ContextTab({ isOnSupportedSite: _ }: Props) {
           <div style={styles.emptyIcon}>💬</div>
           <div style={styles.emptyTitle}>No context set</div>
           <div style={styles.emptyDesc}>
-            Scan the current conversation so PromptCoach can give suggestions that fit what
+            Scan the current conversation so Inpromptu can give suggestions that fit what
             you&apos;ve already discussed.
           </div>
         </div>

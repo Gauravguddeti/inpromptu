@@ -1,4 +1,4 @@
-# PromptCoach — "Grammarly for AI Prompts"
+# Inpromptu — "Grammarly for AI Prompts"
 ### Product Requirements & Implementation Plan (v1)
 
 **Scope decided:** Browser extension → works on any AI chat site → cloud LLM (free tier) for analysis → cloud-synced memory (small backend + DB). Windows/desktop app is a Phase 3 goal, built once the extension core is proven.
@@ -255,7 +255,7 @@ Three signals, combined rather than relied on individually:
 1. **A Google AI Studio API key** (free, no card) — https://aistudio.google.com
 2. **A Groq API key** (free) — https://console.groq.com
 3. **A Supabase account/project** (free tier) — https://supabase.com
-4. **A product name** if "PromptCoach" isn't it, for the manifest/branding
+4. **A product name** if "Inpromptu" isn't it, for the manifest/branding
 5. **Priority order for site adapters** — my default assumption is ChatGPT → Claude.ai → Gemini → Perplexity; tell me if that should change
 6. **A decision on the privacy disclosure wording/tone** before I draft onboarding copy, since it directly affects user trust
 

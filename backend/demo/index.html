@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PromptCoach Demo — AI Prompt Testing Ground</title>
-  <meta name="description" content="Test the PromptCoach Chrome extension on this demo AI chat interface. See underlines, tooltips, and suggestions in action." />
+  <title>Inpromptu Demo — AI Prompt Testing Ground</title>
+  <meta name="description" content="Test the Inpromptu Chrome extension on this demo AI chat interface. See underlines, tooltips, and suggestions in action." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -604,7 +604,7 @@
 <nav class="nav">
   <a class="nav-logo" href="#">
     <span class="logo-pill">✨</span>
-    <span class="logo-name">PromptCoach</span>
+    <span class="logo-name">Inpromptu</span>
   </a>
   <div class="nav-badge">
     <span class="status-dot"></span>
@@ -669,14 +669,14 @@
   <main class="main">
     <div class="chat-header">
       <div class="chat-title">AI Prompt Testing Ground</div>
-      <div class="chat-subtitle">Type a prompt below — PromptCoach will underline issues and suggest fixes in real-time</div>
+      <div class="chat-subtitle">Type a prompt below — Inpromptu will underline issues and suggest fixes in real-time</div>
     </div>
 
     <div class="chat-messages" id="chat-messages">
       <div class="message ai">
         <div class="msg-avatar ai">✨</div>
         <div class="msg-bubble">
-          Hello! I'm the PromptCoach demo. Type your AI prompt in the box below and the extension will analyze it in real-time — underlining issues and showing suggestions on hover, just like Grammarly.<br><br>
+          Hello! I'm the Inpromptu demo. Type your AI prompt in the box below and the extension will analyze it in real-time — underlining issues and showing suggestions on hover, just like Grammarly.<br><br>
           Try one of the example prompts on the left to see it in action! 👈
         </div>
       </div>
@@ -684,7 +684,7 @@
 
     <div class="ext-hint">
       <span class="ext-hint-icon">🧩</span>
-      <span>The PromptCoach extension is watching this input. After you stop typing, it will underline issues — <strong>hover over underlined text</strong> to see suggestions.</span>
+      <span>The Inpromptu extension is watching this input. After you stop typing, it will underline issues — <strong>hover over underlined text</strong> to see suggestions.</span>
     </div>
 
     <div class="input-area">
@@ -869,7 +869,7 @@
 
   // ── Chat simulation ────────────────────────────────────────────────────────
   const RESPONSES = {
-    default: "I received your prompt! Notice how PromptCoach has analyzed it above — hover over any underlined text to see suggestions.",
+    default: "I received your prompt! Notice how Inpromptu has analyzed it above — hover over any underlined text to see suggestions.",
     good: "This is a well-structured prompt! Clear, specific, with a defined audience and output format. The extension should show minimal or no issues.",
   };
 
@@ -969,7 +969,7 @@
 
   // ── Issue counter listener (posted by extension) ───────────────────────────
   window.addEventListener('message', (e) => {
-    if (e.data?.type === 'PROMPTCOACH_ISSUES') {
+    if (e.data?.type === 'INPROMPTU_ISSUES') {
       const { red, orange, blue } = e.data;
       const counter = document.getElementById('issue-counter');
 
@@ -995,7 +995,7 @@
     const interval = setInterval(() => {
       attempts++;
       // Check for the sentinel div injected by the extension's OverlayRenderer
-      const overlay = document.getElementById('promptcoach-overlay');
+      const overlay = document.getElementById('inpromptu-overlay');
       if (overlay) {
         clearInterval(interval);
         statusEl.innerHTML = `
@@ -1006,7 +1006,7 @@
         clearInterval(interval);
         statusEl.innerHTML = `
           <span style="color:#f97316;font-weight:600">⚠ Extension not detected</span><br>
-          <span>Go to <code>chrome://extensions/</code>, click 🔄 refresh on PromptCoach, then reload this tab.</span>
+          <span>Go to <code>chrome://extensions/</code>, click 🔄 refresh on Inpromptu, then reload this tab.</span>
         `;
       }
     }, 500);

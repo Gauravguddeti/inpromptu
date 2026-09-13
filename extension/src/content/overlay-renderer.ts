@@ -338,9 +338,9 @@ export class OverlayRenderer {
   // ─── Sentinel div (extension detection hook) ──────────────────────────────
 
   private createSentinel(): void {
-    if (document.getElementById('promptcoach-overlay')) return;
+    if (document.getElementById('inpromptu-overlay')) return;
     const el = document.createElement('div');
-    el.id = 'promptcoach-overlay';
+    el.id = 'inpromptu-overlay';
     el.style.cssText = 'position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:-1';
     document.body.appendChild(el);
   }
@@ -1091,7 +1091,7 @@ export class OverlayRenderer {
     // Post to demo page if it's listening
     try {
       window.postMessage(
-        { type: 'PROMPTCOACH_ISSUES', ...counts },
+        { type: 'INPROMPTU_ISSUES', ...counts },
         '*'
       );
     } catch { /* ignore */ }

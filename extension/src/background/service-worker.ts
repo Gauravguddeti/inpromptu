@@ -1,5 +1,5 @@
 /**
- * PromptCoach Service Worker (background script)
+ * Inpromptu Service Worker (background script)
  * ─────────────────────────────────────────────
  * Responsibilities:
  *  • Auth token cache (Supabase JWT)
@@ -156,7 +156,7 @@ chrome.runtime.onMessage.addListener(
     handleMessage(message)
       .then(sendResponse)
       .catch((err) => {
-        console.error('[PromptCoach SW] Error handling message:', err);
+        console.error('[Inpromptu SW] Error handling message:', err);
         sendResponse({ type: 'ERROR', payload: { message: err?.message ?? 'Unknown error' } });
       });
 
@@ -183,7 +183,7 @@ async function handleMessage(message: ExtMessage): Promise<unknown> {
       // Check cache first
       const cached = cacheGet(payload.promptHash);
       if (cached) {
-        console.log('[PromptCoach SW] Cache hit for hash:', payload.promptHash);
+        console.log('[Inpromptu SW] Cache hit for hash:', payload.promptHash);
         return { type: 'ANALYZE_RESPONSE', payload: cached };
       }
 
@@ -310,8 +310,8 @@ async function getSettings(): Promise<ExtensionSettings> {
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason === 'install') {
     chrome.storage.local.set({ settings: DEFAULT_SETTINGS });
-    console.log('[PromptCoach] Extension installed.');
+    console.log('[Inpromptu] Extension installed.');
   }
 });
 
-console.log('[PromptCoach] Service worker started.');
+console.log('[Inpromptu] Service worker started.');

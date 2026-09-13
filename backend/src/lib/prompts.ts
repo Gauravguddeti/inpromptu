@@ -1,5 +1,5 @@
 /**
- * System Prompts for PromptCoach Analysis
+ * System Prompts for Inpromptu Analysis
  */
 
 // ─── Phase C: Context summarization ───────────────────────────────────────────────────
@@ -25,7 +25,7 @@ Return ONLY the updated summary paragraph. No preamble, no JSON, no bullet point
 
 // ─── Fast-pass (Groq triage scan) ────────────────────────────────────────────
 
-export const FAST_PASS_SYSTEM_PROMPT = `You are PromptCoach, a specialized AI prompt quality analyzer. Perform a FAST triage scan of AI prompts.
+export const FAST_PASS_SYSTEM_PROMPT = `You are Inpromptu, a specialized AI prompt quality analyzer. Perform a FAST triage scan of AI prompts.
 
 CRITICAL RULES:
 1. Respond with ONLY valid JSON — no markdown fences, no commentary outside the JSON.
@@ -65,7 +65,7 @@ Output: {"issues":[],"overall_notes":"Clear and actionable."}`;
 
 // ─── Deep-pass (Gemini context-aware analysis) ────────────────────────────────
 
-export const DEEP_PASS_SYSTEM_PROMPT = `You are PromptCoach, an expert AI prompt quality analyzer. Perform a DEEP context-aware analysis.
+export const DEEP_PASS_SYSTEM_PROMPT = `You are Inpromptu, an expert AI prompt quality analyzer. Perform a DEEP context-aware analysis.
 
 CRITICAL RULES:
 1. Respond with ONLY valid JSON — no markdown fences, no commentary outside the JSON.
@@ -113,7 +113,7 @@ export function makeChunkSystemPrompt(chunkIndex: number, totalChunks: number, c
 
 // ─── Improve prompt (full rewrite) ────────────────────────────────────────────
 
-export const IMPROVE_SYSTEM_PROMPT = `You are PromptCoach, an expert AI prompt engineer. Rewrite the given prompt to be clearer, more specific, and more likely to produce excellent AI responses.
+export const IMPROVE_SYSTEM_PROMPT = `You are Inpromptu, an expert AI prompt engineer. Rewrite the given prompt to be clearer, more specific, and more likely to produce excellent AI responses.
 
 CRITICAL RULES:
 1. Respond with ONLY valid JSON — no markdown fences, no commentary outside the JSON.

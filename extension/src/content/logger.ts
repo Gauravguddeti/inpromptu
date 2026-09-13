@@ -28,7 +28,7 @@ function send(entry: LogEntry): void {
     keepalive: true,
   }).catch(() => {
     // If backend is down, just log to console
-    console.warn('[PromptCoach Logger] Backend log endpoint unreachable');
+    console.warn('[Inpromptu Logger] Backend log endpoint unreachable');
   });
 }
 
@@ -45,19 +45,19 @@ function makeEntry(level: LogLevel, message: string, context?: string, err?: Err
 
 export const pcLogger = {
   error(message: string, context?: string, err?: Error): void {
-    console.error(`[PromptCoach] ${message}`, err ?? '');
+    console.error(`[Inpromptu] ${message}`, err ?? '');
     send(makeEntry('error', message, context, err));
   },
   warn(message: string, context?: string): void {
-    console.warn(`[PromptCoach] ${message}`);
+    console.warn(`[Inpromptu] ${message}`);
     send(makeEntry('warn', message, context));
   },
   info(message: string, context?: string): void {
-    console.log(`[PromptCoach] ${message}`);
+    console.log(`[Inpromptu] ${message}`);
     send(makeEntry('info', message, context));
   },
   debug(message: string, context?: string): void {
-    console.debug(`[PromptCoach] ${message}`);
+    console.debug(`[Inpromptu] ${message}`);
     if (process.env.NODE_ENV !== 'production') {
       send(makeEntry('debug', message, context));
     }

@@ -118,7 +118,7 @@ export class ScanButton {
     const btn = document.createElement('button');
     btn.id   = BTN_ID;
     btn.type = 'button';
-    btn.setAttribute('aria-label', 'PromptCoach — scan conversation context');
+    btn.setAttribute('aria-label', 'Inpromptu — scan conversation context');
 
     btn.addEventListener('mouseenter', () => this.showTip());
     btn.addEventListener('mouseleave', () => this.hideTip());
@@ -147,7 +147,7 @@ export class ScanButton {
       await this.onScan?.();
       this.setState('fresh');
     } catch (err) {
-      console.warn('[PromptCoach] Scan failed:', err);
+      console.warn('[Inpromptu] Scan failed:', err);
       this.setState('stale');
     }
   }

@@ -86,7 +86,7 @@ export function SettingsTab({ settings, onChange }: Props) {
       <div className="settings-group">
         <div className="settings-label">About</div>
         <div className="setting-row" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
-          <div className="setting-name" style={{ fontSize: '12px' }}>PromptCoach v0.1.0</div>
+          <div className="setting-name" style={{ fontSize: '12px' }}>Inpromptu v0.1.0</div>
           <div className="setting-desc">Grammarly for AI prompts ✨</div>
           <div className="setting-desc" style={{ marginTop: '4px', fontSize: '10px', lineHeight: '1.5' }}>
             ⚠️ Analysis uses free-tier LLM providers that may use your prompts for model training.

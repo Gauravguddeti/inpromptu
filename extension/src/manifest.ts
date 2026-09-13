@@ -2,7 +2,7 @@ import { defineManifest } from '@crxjs/vite-plugin';
 
 export default defineManifest({
   manifest_version: 3,
-  name: 'PromptCoach',
+  name: 'Inpromptu',
   version: '0.1.0',
   description: 'Grammarly for AI prompts — underline, suggest, and improve your prompts on ChatGPT, Claude, Gemini, and more.',
 

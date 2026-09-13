@@ -1,8 +1,8 @@
-# PromptCoach 🧠
+# Inpromptu 🧠
 
 > **Grammarly for AI Prompts** — a browser extension that makes you a better AI user, in real-time.
 
-PromptCoach overlays a Grammarly-style analysis layer on top of every major AI chat interface (ChatGPT, Claude, Gemini, Perplexity). As you type a prompt, it:
+Inpromptu overlays a Grammarly-style analysis layer on top of every major AI chat interface (ChatGPT, Claude, Gemini, Perplexity). As you type a prompt, it:
 
 - 🔴 **Underlines issues** — ambiguous phrasing, missing context, vague output format requests
 - 💡 **Shows hover tooltips** — explains each issue + 2 ranked rewrite suggestions
@@ -52,12 +52,12 @@ backend/            Node.js / Express API (TypeScript)
 
 ## 🚀 Installation (For Users)
 
-**PromptCoach requires ZERO setup or sign-in to start working immediately.** 
+**Inpromptu requires ZERO setup or sign-in to start working immediately.** 
 
-Currently, PromptCoach is available to install manually. We are also pending review on the **Microsoft Edge Add-ons Store** (which will allow 1-click installs on both Edge and Chrome).
+Currently, Inpromptu is available to install manually. We are also pending review on the **Microsoft Edge Add-ons Store** (which will allow 1-click installs on both Edge and Chrome).
 
 ### Install via ZIP (Takes 10 seconds):
-1. Go to the [Releases page](../../releases) (or download `promptcoach-v1.0.0.zip` directly from this repo).
+1. Go to the [Releases page](../../releases) (or download `inpromptu-v1.0.0.zip` directly from this repo).
 2. Extract the `.zip` file on your computer.
 3. Open Chrome or Edge and go to `chrome://extensions` (or `edge://extensions`).
 4. Turn on **Developer mode** in the top right.
@@ -77,8 +77,8 @@ Currently, PromptCoach is available to install manually. We are also pending rev
 
 ### 1. Clone
 ```bash
-git clone https://github.com/YOUR_USERNAME/promptcoach.git
-cd promptcoach
+git clone https://github.com/YOUR_USERNAME/inpromptu.git
+cd inpromptu
 ```
 
 ### 2. Backend
@@ -113,8 +113,8 @@ npm run build          # outputs to extension/dist/
 
 ### 5. Use it
 1. Open ChatGPT, Claude, or Gemini
-2. Click the **PromptCoach** icon in your toolbar
-3. Hit **Scan Chat** in the Context tab to give PromptCoach awareness of your conversation
+2. Click the **Inpromptu** icon in your toolbar
+3. Hit **Scan Chat** in the Context tab to give Inpromptu awareness of your conversation
 4. Start typing a prompt — issues appear as coloured underlines
 
 ---
@@ -140,7 +140,7 @@ A `requestAnimationFrame`-tracked `position: fixed` button appears inside the ch
 ## 📁 Project Structure
 
 ```
-promptcoach/
+inpromptu/
 ├── extension/
 │   ├── src/
 │   │   ├── adapters/         # ChatGPT, Claude, Gemini, Generic adapters
@@ -189,7 +189,7 @@ promptcoach/
 - [ ] Firefox support
 
 ### 🖥️ Phase 3 — Desktop App
-**The browser extension is just the beginning.** Once the core is proven, PromptCoach will ship as a **standalone desktop application** for Windows and macOS — sitting system-wide and overlaying prompt assistance on top of any app that communicates with an AI (not just browsers). Think: native AI copilot for your entire desktop, not just the browser tab.
+**The browser extension is just the beginning.** Once the core is proven, Inpromptu will ship as a **standalone desktop application** for Windows and macOS — sitting system-wide and overlaying prompt assistance on top of any app that communicates with an AI (not just browsers). Think: native AI copilot for your entire desktop, not just the browser tab.
 
 > Built on the same backend, same memory system, same adapters — just a native shell around them.
 

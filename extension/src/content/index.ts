@@ -1,5 +1,5 @@
 /**
- * PromptCoach Content Script
+ * Inpromptu Content Script
  * ───────────────────────────
  * Boots adapters, overlay renderer, debounce engine, in-page scan button,
  * and handles message traffic from the popup/service-worker.
